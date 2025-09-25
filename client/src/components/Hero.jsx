@@ -15,7 +15,7 @@ function Hero() {
             </p>
         </div>
 
-        <div className='flex  flex-wrap justify-center gap-4 text-sm max-sm:text-xs'>
+        <div className='flex flex-wrap justify-center gap-4 text-sm max-sm:text-xs'>
             <button onClick={()=>navigate('/ai')} className='cursor-pointer bg-[#6D04DE] text-white px-10 py-3 rounded-lg hover:scale-102 active:scale-95 transition'>Start Creating Now!</button>
             <button className='cursor-pointer bg-white px-10 py-3 rounded-lg border border-gray-300 hover:scale-102 active:scale-95 transition'>Watch Demo</button>
         </div>
