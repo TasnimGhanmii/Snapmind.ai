@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { UserButton, useClerk,useUser } from '@clerk/clerk-react';
 
 function Navbar() {
+  {/*can be used for:
+     a completely different page
+    a sub-route
+    the same page with different params
+    or even just going "back" */}
+    
   const navigate=useNavigate()
 
   const {user}=useUser()
@@ -12,7 +18,7 @@ function Navbar() {
   const {openSignIn}=useClerk()
   
   return (
-    <div className='fixed flex  items-center  justify-items-center w-full z-5 py-3 px-4 flex-col sm:justify-between sm:flex-row sm:px-20 xl:px-32 backdrop-blur-2xl'>
+    <div className='fixed flex  items-center  justify-items-center w-full z-5 py-3 px-4 flex-col sm:justify-between sm:flex-row sm:px-20 xl:px-32 backdrop-blur-2xl '>
          <div className="flex gap-2 cursor-pointer" onClick={()=>navigate('/')}>
             <div className=''>
                 <img src={assets.logo} alt="icon" className='max-w-10 ' />
