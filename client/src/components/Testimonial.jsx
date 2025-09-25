@@ -69,7 +69,7 @@ function Testimonial ()  {
         `}</style>
 
             <div className="marquee-row w-full mx-auto max-w-5xl overflow-hidden relative">
-                <h1 className='text-center my-5 font-medium text-5xl'>Loved By Creators</h1>
+                <h1 className='text-center mt-20 mb-5 font-medium text-5xl'>Loved By Creators</h1>
                 <p className='text-sm text-gray-500 text-center mb-5'>Don't just take our word for it.Here's what our users are saying.</p>
                 <div className="absolute  left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent"></div>
                 <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5">
