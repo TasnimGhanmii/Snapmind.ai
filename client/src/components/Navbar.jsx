@@ -18,7 +18,7 @@ function Navbar() {
   const {openSignIn}=useClerk()
   
   return (
-    <div className='fixed flex  items-center  justify-items-center w-full z-5 py-3 px-4 flex-col sm:justify-between sm:flex-row sm:px-20 xl:px-32 backdrop-blur-2xl '>
+    <div className='fixed flex backdrop-blur-2xl items-center  justify-items-center w-full z-5 py-3 px-4 flex-col sm:justify-between sm:flex-row sm:px-20 xl:px-32  '>
          <div className="flex gap-2 cursor-pointer" onClick={()=>navigate('/')}>
             <div className=''>
                 <img src={assets.logo} alt="icon" className='max-w-10 ' />
