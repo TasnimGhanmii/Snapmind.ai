@@ -24,7 +24,7 @@ function WriteArticle() {
               <h1 className='text-xl font-semibold'>Article Configuration</h1>
              </div>
 
-             <p>Article Topic</p>
+             <p className='mt-6 text-sm font-medium'>Article Topic</p>
 
              <input type="text" onChange={(e)=>setInput(e.target.value)} value={input} className='w-full p-2 px-3 mt-2 outline-none text-sm rounded-md border border-gray-300' placeholder='The future of AI is...' name="" id="" required />
 
@@ -44,7 +44,19 @@ function WriteArticle() {
              </button>
         </form>
 
-        <div>
+        <div className='w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-[24rem] max-h-[600px] '>
+
+          <div className='flex items-center gap-3'>
+              <Edit className='w-5 h-5 text-[#4A7AFF] '/>
+              <h1 className='text-xl font-semibold'>Generated Article</h1>
+          </div>
+
+          <div className='flex-1 flex justify-center items-center'>
+                <div>
+                  <Edit className='w-5 h-5 text-[#4A7AFF] '/>
+
+                </div>
+          </div>
            
         </div>
     </div>
