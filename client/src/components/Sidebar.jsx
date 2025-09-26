@@ -1,5 +1,5 @@
-import { useClerk, useUser } from '@clerk/clerk-react';
-import { Image, Hash, House, SquarePen, Eraser, Scissors, FileText, Users } from 'lucide-react';
+import { Protect, useClerk, useUser } from '@clerk/clerk-react';
+import { Image, Hash, House, SquarePen, Eraser, Scissors, FileText, Users, LogOut } from 'lucide-react';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -20,22 +20,25 @@ const Sidebar = ({ sidebar, setSidebar }) => {
 
   return (
     <div
-      className={`w-60 bg-white border-r border-gray-200 flex flex-col items-center max-sm:absolute top-14 bottom-0 
+      className={`w-60 bg-white border-r border-gray-200 flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 
         ${sidebar ? 'translate-x-0' : 'max-sm:-translate-x-full'} transition-all duration-300 ease-in-out`}
-    >
-      {/* User Info */}
+     >
+      <div>
+          {/* User Info */}
       <div className="my-7 w-full text-center">
         <img
+          onClick={openUserProfile}
           src={user?.imageUrl}
           alt="user avatar"
-          className="w-14 h-14 rounded-full mx-auto"
+          className="w-14 h-14 rounded-full mx-auto cursor-pointer"
         />
         <h1 className="font-medium mt-2">{user?.fullName}</h1>
       </div>
 
       {/* Navigation */}
       <div className="w-full">
-        {navItems.map(({ to, label, Icon }) => (
+        <div className="px-6 mt-5 text-sm text-gray-600 font-medium">
+                {navItems.map(({ to, label, Icon }) => (
           <div key={to} className="w-full">
             <NavLink
               to={to}
@@ -52,8 +55,24 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             </NavLink>
           </div>
         ))}
+        </div>
       </div>
-
+      </div>
+      
+      
+      <div className='w-full border-t border-gray-200 m p-4 px-7 flex items-center justify-between' >
+           <div className='flex gap-2 items-center cursor-pointer' onClick={openUserProfile}>
+              <img className='w-8 rounded-full' src={user.imageUrl} alt="profile" />
+              <div>
+                <h1 className='text-sm font-medium'>{user.fullName}</h1>
+                <p className='text-xs text-gray-500 '>
+                  <Protect plan='Premium' fallback='Free'>Premium</Protect>
+                  Plan
+                </p>
+              </div>
+           </div>
+           <LogOut onClick={()=>{signOut}} className='w-4.5 text-gray-400 hover:text-gray-700 transition cursor-pointer' />
+      </div>
       
     </div>
   );

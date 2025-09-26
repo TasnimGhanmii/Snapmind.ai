@@ -2,7 +2,9 @@ import React from 'react'
 
 function WriteArticle() {
   return (
-    <div>WriteArticle</div>
+    <div>
+      
+    </div>
   )
 }
 
