@@ -62,9 +62,9 @@ const Sidebar = ({ sidebar, setSidebar }) => {
       
       <div className='w-full border-t border-gray-200 m p-4 px-7 flex items-center justify-between' >
            <div className='flex gap-2 items-center cursor-pointer' onClick={openUserProfile}>
-              <img className='w-8 rounded-full' src={user.imageUrl} alt="profile" />
+              <img className='w-8 rounded-full' src={user?.imageUrl} alt="profile" />
               <div>
-                <h1 className='text-sm font-medium'>{user.fullName}</h1>
+                <h1 className='text-sm font-medium'>{user?.fullName}</h1>
                 <p className='text-xs text-gray-500 '>
                   <Protect plan='Premium' fallback='Free'>Premium</Protect>
                   Plan
