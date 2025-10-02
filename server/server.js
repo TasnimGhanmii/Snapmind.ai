@@ -1,10 +1,30 @@
 import express from 'express'
 import cors from 'cors'
+//Loads environment variables from a .env file into process.env.
+//I can use process.env.PORT to access the .env vars
 import 'dotenv/config'
 
+//Creates an Express application object app.
+//I can use app to define routes, middlewares, and server behavior.
 const app=express()
+/* 
+By default, browsers block requests from one domain to another (for security reasons).
+cors middleware allows my backend to accept requests from other origins (e.g., React frontend running on http://localhost:5173 making requests to your API at http://localhost:3000).
+*/
 
+//Middlewares
+//Registers the CORS middleware so all requests to my API are allowed from different origins. Without this, my frontend might get blocked by the browser with a CORS error
 app.use(cors())
+
+//Express by default doesn’t know how to handle JSON request bodies.
+//This middleware parses JSON payloads (Content-Type: application/json) and makes the data available in req.body.
 app.use(express.json())
 
 app.get('/',(req,res)=>res.send('server is live'))
+
+//Looks for a PORT variable in the environment (from .env file or deployment platform).
+const PORT=process.env.PORT || 3000;
+//Starts the server and makes it listen for incoming HTTP requests.
+app.listen(PORT,()=>{
+    console.log('server is runnig on port',PORT)
+})
