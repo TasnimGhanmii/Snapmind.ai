@@ -4,9 +4,16 @@ import cors from 'cors'
 //I can use process.env.PORT to access the .env vars
 import 'dotenv/config'
 
+import {clerkMiddleware, requireAuth} from '@clerk/express'
+import aiRouter from './routes/aiRoutes.js'
+import connectCloudinary from './configs/cloudinary.js'
+
 //Creates an Express application object app.
 //I can use app to define routes, middlewares, and server behavior.
 const app=express()
+
+await connectCloudinary()
+  
 /* 
 By default, browsers block requests from one domain to another (for security reasons).
 cors middleware allows my backend to accept requests from other origins (e.g., React frontend running on http://localhost:5173 making requests to your API at http://localhost:3000).
@@ -20,7 +27,16 @@ app.use(cors())
 //This middleware parses JSON payloads (Content-Type: application/json) and makes the data available in req.body.
 app.use(express.json())
 
+//adding clerk middleware so we can handle auth request, integrating clerk in the backend
+app.use(clerkMiddleware())
+
 app.get('/',(req,res)=>res.send('server is live'))
+
+//only logged in user can access the routes coming after those lines
+app.use(requireAuth())
+       //url that my express server listens to,mounts the aiRouter route
+app.use('/api/ai',aiRouter)
+
 
 //Looks for a PORT variable in the environment (from .env file or deployment platform).
 const PORT=process.env.PORT || 3000;
