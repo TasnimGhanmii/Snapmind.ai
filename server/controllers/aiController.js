@@ -132,3 +132,71 @@ export const generateImage=async(req,resp)=>{
          resp.json({success:false,message:error.message})
     }
 }
+
+
+export const removeBackround=async(req,resp)=>{
+    try{
+       const{userId}=req.auth();
+       const{photo}=req.file;
+       const plan=req.plan;
+
+       if(plan!=='premium')
+       {
+          return resp.json({success:false,message:"Only available for Premium!"}) 
+       }
+
+
+  
+  
+  const {secure_url}=await cloudinary.uploader.upload(photo.path,{transformation:[{
+       effect:'backround_removal',
+       backround_removal:'remove_the_backround'
+  }]})
+
+
+  
+  await sql`insert into creations (user_id,prompt,content,type) values (${userId},'Remove backround from image',${secure_url},'image')`
+  
+  
+  resp.json({success:true,content:secure_url})
+    }
+    catch (error) {
+         console.log(error.message)
+         resp.json({success:false,message:error.message})
+    }
+}
+
+
+export const RemoveObject=async(req,resp)=>{
+    try{
+       const{userId}=req.auth();
+       const{object}=req.body;
+       const{photo}=req.file;
+       const plan=req.plan;
+
+       if(plan!=='premium')
+       {
+          return resp.json({success:false,message:"Only available for Premium!"}) 
+       }
+
+
+  
+  
+  const {public_id}=await cloudinary.uploader.upload(photo.path)
+  
+  const image_url=cloudinary.url(public_id,{
+    transformation:[{effect:`gen_remove:${object}`}],
+    resource_type:'image'
+  })
+
+  
+  await sql`insert into creations (user_id,prompt,content,type) values (${userId},'${`Removed ${object} from image`},${image_url},'image')`
+  
+  
+  resp.json({success:true,content:image_url})
+    }
+    catch (error) {
+         console.log(error.message)
+         resp.json({success:false,message:error.message})
+    }
+}
