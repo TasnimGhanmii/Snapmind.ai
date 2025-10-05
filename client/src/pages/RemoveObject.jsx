@@ -1,12 +1,46 @@
 import { Scissors } from 'lucide-react'
 import { useState } from 'react'
+import axios from 'axios'
+import {useAuth} from '@clerk/clerk-react'
+import {toast} from 'react-hot-toast'
+
 function RemoveObject() {
   
   const [input, setInput] = useState('')
   const [object,setObject]=useState('')
-
+  const[loading,setLoading]=useState(false)
+  const[content,setContent]=useState('')
+  const {getToken}=useAuth()
+  
   const onSubmitHandler = async (e) => {
     e.preventDefault()
+    try
+         {
+          const token = await getToken()
+          setLoading(true)
+          if(object.split(' ').length>1)
+          {
+             return toast('Please enter one object name')
+          }
+          const formData=new FormData()
+          formData.append('image',input)
+          formData.append('object',object)
+          const{data}=await axios.post('/api/ai/remove-object',formData,{headers:{Authorization: `Bearer ${token}`}})
+         if(data.success)
+         {
+          setContent(data.content)
+         }
+         else
+         {
+          toast.error(data.message)
+         }
+      }
+      catch (error)
+      {
+        toast.error(error.message)
+
+      }
+      setLoading(false)
   }
 
   return (
@@ -38,10 +72,20 @@ function RemoveObject() {
           required 
         />
         
-        <button className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer '>
-          <Scissors className='w-5'/>
-          Remove Object
-        </button>
+        <button
+            disabled={loading}
+            className={`w-full flex justify-center items-center gap-2
+              bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white px-4 py-2 mt-6 text-sm rounded-lg
+              ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+          >
+            {loading ? (
+              <span className="w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin"></span>
+            ) : (
+              <Scissors className="w-5" />
+            )}
+  Remove Object
+</button>
+
       </form>
 
       <div className='w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-[24rem]  '>
@@ -50,12 +94,18 @@ function RemoveObject() {
           <h1 className='text-xl font-semibold'>Processed Image</h1>
         </div>
 
-        <div className='flex-1 flex justify-center items-center'>
+        {!content ? (<div className='flex-1 flex justify-center items-center'>
           <div className='text-sm flex flex-col items-center gap-5 text-gray-400'>
             <Scissors className='w-9 h-9 '/>
             <p>upload an image & click "Remove Object" to get started</p>
           </div>
-        </div>
+        </div>) : (
+          <div className='mt-3 h-full'>
+            <img className='w-full h-full' src={content} alt="genImg" />
+          </div>
+        )}
+
+        
       </div>
     </div>
   )

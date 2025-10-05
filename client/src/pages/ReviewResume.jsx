@@ -1,11 +1,41 @@
 import React from 'react'
 import { useState } from 'react'
 import { FileText } from 'lucide-react'
+import axios from 'axios'
+import {useAuth} from '@clerk/clerk-react'
+import {toast} from 'react-hot-toast'
+import Markdown from 'react-markdown'
+
 export default function ReviewResume() {
   const [input, setInput] = useState('')
-
+  const[loading,setLoading]=useState(false)
+  const[content,setContent]=useState('')
+  const {getToken}=useAuth()
+  
   const onSubmitHandler = async (e) => {
     e.preventDefault()
+    try
+         {
+          const token = await getToken()
+          setLoading(true)
+          const formData=new FormData()
+          formData.append('resume',input)
+          const{data}=await axios.post('/api/ai/review-resume',formData,{headers:{Authorization: `Bearer ${token}`}})
+         if(data.success)
+         {
+          setContent(data.content)
+         }
+         else
+         {
+          toast.error(data.message)
+         }
+      }
+      catch (error)
+      {
+        toast.error(error.message)
+
+      }
+      setLoading(false)
   }
 
   return (
@@ -26,10 +56,20 @@ export default function ReviewResume() {
           required 
         />
 
-        <button className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer '>
-          <FileText className='w-5'/>
-          Remove Object
-        </button>
+        <button
+             disabled={loading}           
+             className={`w-full flex justify-center items-center gap-2
+               bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white px-4 py-2 mt-6 text-sm rounded-lg
+               ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+           >
+             {loading ? (
+               <span className="w-4 h-4 my-1 rounded-full border-2 border-t-transparent animate-spin"></span>
+             ) : (           
+    <FileText className="w-5" />
+             )}
+             Review Resume
+           </button>
+
       </form>
 
       <div className='w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-[24rem]  max-h-[600px]'>
@@ -38,12 +78,21 @@ export default function ReviewResume() {
           <h1 className='text-xl font-semibold'>Resume Review</h1>
         </div>
 
-        <div className='flex-1 flex justify-center items-center'>
+        {!content ? (<div className='flex-1 flex justify-center items-center'>
           <div className='text-sm flex flex-col items-center gap-5 text-gray-400'>
             <FileText className='w-9 h-9 '/>
             <p>upload a resume & click "Review Resume" to get started</p>
           </div>
-        </div>
+        </div>) :(
+          <div className='mt-3 h-full overflow-y-scroll text-sm text-slate-600'>
+               <div className='reset-tw'>
+            <Markdown>
+              {content}
+            </Markdown>
+          </div>
+          </div>
+          
+        ) }
       </div>
     </div>
   )
