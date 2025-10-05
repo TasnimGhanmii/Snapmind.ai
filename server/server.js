@@ -7,6 +7,7 @@ import 'dotenv/config'
 import {clerkMiddleware, requireAuth} from '@clerk/express'
 import aiRouter from './routes/aiRoutes.js'
 import connectCloudinary from './configs/cloudinary.js'
+import userRouter from './routes/userRoutes.js'
 
 //Creates an Express application object app.
 //I can use app to define routes, middlewares, and server behavior.
@@ -34,8 +35,9 @@ app.get('/',(req,res)=>res.send('server is live'))
 
 //only logged in user can access the routes coming after those lines
 app.use(requireAuth())
-       //url that my express server listens to,mounts the aiRouter route
+       //url that my express server listens to,mounts the aiRouter.js routes
 app.use('/api/ai',aiRouter)
+app.use('/api/user',userRouter)
 
 
 //Looks for a PORT variable in the environment (from .env file or deployment platform).

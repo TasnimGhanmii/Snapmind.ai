@@ -1,11 +1,16 @@
-//api controller fct
+//api controller fcts
 import OpenAI from "openai";
 import sql from "../configs/db.js";
 import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'
 import FormData from 'form-data'
+import fs from 'fs'
+import { createRequire } from "module";
 
+const require = createRequire(import.meta.url);
+
+const pdf = require("pdf-parse");
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -24,7 +29,7 @@ export const generateArticle=async(req,resp)=>{
           return resp.json({success:false,message:"limit reached.Upgrade to continue."}) 
        }
 
-       const response = await AI.chat.completions.create({
+    const response = await AI.chat.completions.create({
     model: "gemini-2.0-flash",
     messages: [
         {
@@ -137,7 +142,7 @@ export const generateImage=async(req,resp)=>{
 export const removeBackround=async(req,resp)=>{
     try{
        const{userId}=req.auth();
-       const{photo}=req.file;
+       const photo=req.file;
        const plan=req.plan;
 
        if(plan!=='premium')
@@ -149,7 +154,7 @@ export const removeBackround=async(req,resp)=>{
   
   
   const {secure_url}=await cloudinary.uploader.upload(photo.path,{transformation:[{
-       effect:'backround_removal',
+       effect:'background_removal',
        backround_removal:'remove_the_backround'
   }]})
 
@@ -167,11 +172,46 @@ export const removeBackround=async(req,resp)=>{
 }
 
 
-export const RemoveObject=async(req,resp)=>{
+export const RemoveObject = async (req, resp) => {
+  try {
+    const { userId } = req.auth();
+    const { object } = req.body;
+    const photo = req.file;
+    const plan = req.plan;
+
+    if (plan !== 'premium') {
+      return resp.json({ success: false, message: "Only available for Premium!" });
+    }
+
+    const { public_id } = await cloudinary.uploader.upload(photo.path);
+
+    const image_url = cloudinary.url(public_id, {
+      transformation: [{ effect: `gen_remove:${object}` }],
+      resource_type: 'image',
+    });
+
+    await sql`
+      INSERT INTO creations (user_id, prompt, content, type)
+      VALUES (
+        ${userId},
+        ${`Removed ${object} from image`},
+        ${image_url},
+        'image'
+      )
+    `;
+
+    resp.json({ success: true, content: image_url });
+  } catch (error) {
+    console.log(error.message);
+    resp.json({ success: false, message: error.message });
+  }
+};
+
+
+export const ResumeReview=async(req,resp)=>{
     try{
        const{userId}=req.auth();
-       const{object}=req.body;
-       const{photo}=req.file;
+       const resume=req.file;
        const plan=req.plan;
 
        if(plan!=='premium')
@@ -180,23 +220,39 @@ export const RemoveObject=async(req,resp)=>{
        }
 
 
-  
-  
-  const {public_id}=await cloudinary.uploader.upload(photo.path)
-  
-  const image_url=cloudinary.url(public_id,{
-    transformation:[{effect:`gen_remove:${object}`}],
-    resource_type:'image'
-  })
+    if(resume.size>5*1024*1024)
+    {
+       return resp.json({success:false, message:"Resume file size exceeds allowed size (5MB)"})
+    }
+    
+    const dataBuffer = fs.readFileSync(resume.path);
+    const pdfData=await pdf(dataBuffer)
 
+
+    const prompt=`Review the following resume & provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume Content: \n\n${pdfData.text}`
+    
+    const response = await AI.chat.completions.create({
+    model: "gemini-2.0-flash",
+    messages: [
+        {
+            role: "user",
+            content:prompt,
+        },
+    ],
+    temperature:0.7,
+    max_tokens:1000,
+  });
+
+  const content=response.choices[0].message.content;
+
+  await sql`insert into creations (user_id,prompt,content,type) values (${userId},'Review the uploaded eesume',${content},'Resume-Review')`
   
-  await sql`insert into creations (user_id,prompt,content,type) values (${userId},'${`Removed ${object} from image`},${image_url},'image')`
   
-  
-  resp.json({success:true,content:image_url})
+  resp.json({success:true,content})
     }
     catch (error) {
          console.log(error.message)
          resp.json({success:false,message:error.message})
     }
 }
+
