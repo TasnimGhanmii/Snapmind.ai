@@ -37,6 +37,7 @@ app.get('/',(req,res)=>res.send('server is live'))
 app.use(requireAuth())
        //url that my express server listens to,mounts the aiRouter.js routes
 app.use('/api/ai',aiRouter)
+//or any request that starts with /api/users, send control to this router & the router will check the sub route and forward the req to the right controller
 app.use('/api/user',userRouter)
 
 

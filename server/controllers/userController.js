@@ -49,8 +49,9 @@ export const toggleLikeCreation=async(req,resp)=>{
         update_likes=[...currentLikes,userIdStr]
         message='creation liked'
        }
+                             //converts the JS array to a comma-separated string
        const formattedArray=`{${update_likes.join(',')}}`
-       
+                                      //tells postgres this is an array literal not a string
        await sql`update creations set likes=${formattedArray}::text[] where id=${id}`
        
        resp.json({success: true,message})
