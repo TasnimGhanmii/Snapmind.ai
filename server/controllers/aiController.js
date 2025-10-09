@@ -6,6 +6,7 @@ import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'
 import FormData from 'form-data'
 import fs from 'fs'
+import PDFParser from "pdf2json";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
