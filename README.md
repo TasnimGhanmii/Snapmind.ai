@@ -1,7 +1,7 @@
 # Snapmind.ai — AI-Powered SaaS Platform
 
 <p align="center">
-  <img src="1.png" alt="Snapmind.ai Hero" width="800"/>
+  <img src="snamind/1.png" alt="Snapmind.ai Hero" width="800"/>
 </p>
 
 > **Create Amazing Content with AI Tools** — A full-stack SaaS platform that empowers creators with cutting-edge AI features for writing, image generation, and more.
