@@ -1,7 +1,7 @@
 # Snapmind.ai — AI-Powered SaaS Platform
 
 <p align="center">
-  <img src="snapmind/1780218507181_1.png" alt="Snapmind.ai Hero" width="800"/>
+  <img src="1.png" alt="Snapmind.ai Hero" width="800"/>
 </p>
 
 > **Create Amazing Content with AI Tools** — A full-stack SaaS platform that empowers creators with cutting-edge AI features for writing, image generation, and more.
@@ -79,52 +79,52 @@ Snapmind.ai offers a free tier and a premium subscription, with a seamless dashb
 
 <details>
 <summary>Landing Page</summary>
-<img src="snapmind/1780218507181_1.png" alt="Landing Page" width="700"/>
+<img src="snapmind/1.png" alt="Landing Page" width="700"/>
 </details>
 
 <details>
 <summary>AI Tools Overview</summary>
-<img src="snapmind/1780218507182_2.png" alt="AI Tools" width="700"/>
+<img src="snapmind/2.png" alt="AI Tools" width="700"/>
 </details>
 
 <details>
 <summary>Dashboard</summary>
-<img src="snapmind/1780218507183_7.png" alt="Dashboard" width="700"/>
+<img src="snapmind/7.png" alt="Dashboard" width="700"/>
 </details>
 
 <details>
 <summary>Write Article</summary>
-<img src="snapmind/1780218507185_write_article.png" alt="Write Article" width="700"/>
+<img src="snapmind/write_article.png" alt="Write Article" width="700"/>
 </details>
 
 <details>
 <summary>AI Image Generation</summary>
-<img src="snapmind/1780218507184_generate_image.png" alt="Image Generation" width="700"/>
+<img src="snapmind/generate_image.png" alt="Image Generation" width="700"/>
 </details>
 
 <details>
 <summary>Background Removal</summary>
-<img src="snapmind/1780218507185_Remove_Backround.png" alt="Background Removal" width="700"/>
+<img src="snapmind/Remove_Backround.png" alt="Background Removal" width="700"/>
 </details>
 
 <details>
 <summary>Object Removal</summary>
-<img src="snapmind/1780218507185_remove_object.png" alt="Object Removal" width="700"/>
+<img src="snapmind/remove_object.png" alt="Object Removal" width="700"/>
 </details>
 
 <details>
 <summary>Resume Review</summary>
-<img src="snapmind/1780218507185_review_resume.png" alt="Resume Review" width="700"/>
+<img src="snapmind/review_resume.png" alt="Resume Review" width="700"/>
 </details>
 
 <details>
 <summary>Community Gallery</summary>
-<img src="snapmind/1780218507184_community.png" alt="Community" width="700"/>
+<img src="snapmind/community.png" alt="Community" width="700"/>
 </details>
 
 <details>
 <summary>Pricing Plans</summary>
-<img src="snapmind/1780218507183_4.png" alt="Pricing" width="700"/>
+<img src="snapmind/4.png" alt="Pricing" width="700"/>
 </details>
 
 ---
